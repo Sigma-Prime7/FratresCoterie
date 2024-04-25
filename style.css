@@ -10,9 +10,10 @@
 }
 #enemyControls{
     position: absolute;
-    top:0%;
-    left: 0%;
+    top:5%;
+    left: 50%;
+    transform:translate(-50%, -50%);
     height:30px;
     width:30px;
-    text:center;
+    
 }

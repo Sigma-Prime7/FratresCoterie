@@ -5,10 +5,13 @@ const ctx = canvas.getContext('2d');
 CANVAS_WIDTH = canvas.width = 500;
 CANVAS_HEIGHT = canvas.height = 600;
 const numberOfEnemies = 10;
-const enemiesArray = [];
+const enemiesArray= [];
+const enemiesArray1 = [];
+const enemiesArray2 = [];
+const enemiesArray3 = [];
+const enemiesArray4 = [];
 const enemyControls = document.getElementById('enemyControls');
-let enemyName = enemyControls.value;
-let enemyNumber= enemyControls.number;
+let enemyNumber = 1;
 let gameFrame =0;
 const enemyAnimations =[
 {
@@ -36,17 +39,17 @@ const enemyAnimations =[
     spriteHeight:212,
 }]
 class Enemy{
-    constructor() {
+    constructor(name,totalFrames,spriteWidth,spriteHeight) {
         
        this.image = new Image();
-       this.image.src ="assets/enemies/enemy1.png"
+       this.image.src =`assets/enemies/${name}.png`;
         this.speed = Math.random() *4 -2   
-        this.spriteWidth=293;
-        this.spriteHeight=155;
+        this.spriteWidth=spriteWidth;
+        this.spriteHeight=spriteHeight;
         this.width = this.spriteWidth/3;
         this.height = this.spriteHeight/3;
         this.frame=0;
-        this.totalFrames = 6;
+        this.totalFrames = totalFrames;
         this.flapSpeed= Math.floor(Math.random() * 3 + 1);
         this.x = Math.random() * (canvas.width-this.width);
         this.y= Math.random() * (canvas.height-this.height);
@@ -56,19 +59,13 @@ class Enemy{
         this.x+= Math.random() * 7 -3.5;
         this.y+=Math.random() * 10 -5;
         if(gameFrame % this.flapSpeed === 0){
-            this.frame > totalFrames-2 ? this.frame =0:this.frame++;
+            this.frame > this.totalFrames-2 ? this.frame =0:this.frame++; //totalFrames-2
         }
     
     }
 
    
 
-    changeSprite(src,spriteWidth,spriteHeight,totalFrames){
-        this.image.src = src;
-        this.totalFrames=totalFrames;
-        this.spriteWidth=spriteWidth;
-        this.spriteHeight=spriteHeight;
-    }
 
     draw(){
         
@@ -80,12 +77,22 @@ class Enemy{
 
 
 for(let i = 0; i < numberOfEnemies; i++){
-enemiesArray.push(new Enemy());
+enemiesArray1.push(new Enemy(enemyAnimations[0].name,enemyAnimations[0].frames,enemyAnimations[0].spriteWidth,enemyAnimations[0].spriteHeight));
+enemiesArray2.push(new Enemy(enemyAnimations[1].name,enemyAnimations[1].frames,enemyAnimations[1].spriteWidth,enemyAnimations[1].spriteHeight));
+enemiesArray3.push(new Enemy(enemyAnimations[2].name,enemyAnimations[2].frames,enemyAnimations[2].spriteWidth,enemyAnimations[2].spriteHeight));
+enemiesArray4.push(new Enemy(enemyAnimations[3].name,enemyAnimations[3].frames,enemyAnimations[3].spriteWidth,enemyAnimations[3].spriteHeight));
 }
+const enemyArray = [];
+enemyArray.push(enemiesArray1);
+enemyArray.push(enemiesArray2);
+enemyArray.push(enemiesArray3);
+enemyArray.push(enemiesArray4);
+
+
 function animate(){
     ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    enemiesArray.forEach(enemy => {
-      //  enemy.changeSprite(`assets/enemies/${enemyName}.png`,enemyAnimations[enemyName].frames,enemyAnimations[enemyName].frames,enemyAnimations[enemyName].frames)
+
+    enemyArray[enemyNumber-1].forEach(enemy => {
         enemy.update();
         enemy.draw();
         
@@ -95,11 +102,8 @@ function animate(){
 }
 
 enemyControls.addEventListener('change',function(e){
-   enemyName= e.target.value;
-   enemyNumber= e.target.number;
-   console.log(enemyNumber);
-   enemiesArray.forEach(enemy => {
-     //  enemy.changeSprite(`assets/enemies/${enemyName}.png`);
-   })
+    
+   enemyNumber= e.target.value;
+   
 })
 animate();
